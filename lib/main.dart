@@ -100,50 +100,80 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     final chatService = Provider.of<ChatService>(context);
     final messages = chatService.messages;
-
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(sessionUser != null ? 'Chat con $currentUser' : 'Iniciar Chat'),
-        actions: [
-          if (sessionUser != null)
-            Padding(padding: EdgeInsets.only(right: 25, top: 20),
-            child: TextButton(
-                onPressed: logoutChat,
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-
-                ),
-                child: const Text('Salir', style: TextStyle(color: Colors.white)),
-              ),
-            ),
-
-        ],
+        title: Text( sessionUser!=null ? 'Usuario: $sessionUser' : 'WSChats'),
+        titleTextStyle: TextStyle(
+          fontSize: 16,
+          color: Colors.black87,
+        ),
+        backgroundColor: Colors.lightBlueAccent,
       ),
       body: sessionUser == null
           ? Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20).copyWith(top: 200),
         child: Column(
           children: [
+            const Text(
+              'Iniciar Chat',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
             TextField(
               controller: _senderController,
-              decoration: const InputDecoration(labelText: 'Tu nombre'),
-            ),
+              decoration: const InputDecoration(
+                labelText: 'Tu nombre',
+                border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(80))),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+              ),
             const SizedBox(height: 10),
             TextField(
               controller: _receiverController,
-              decoration: const InputDecoration(labelText: 'Nombre del receptor'),
+              decoration: const InputDecoration(
+                  labelText: 'Nombre del receptor',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(80))),
+                  filled: true,
+                  fillColor: Colors.white,
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: startChat,
-              child: const Text('Iniciar Chat'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(80),
+                ),
+              ),
+              child: const Text('Iniciar Chat', style: TextStyle(color: Colors.white)
+              ),
             ),
           ],
         ),
       )
           : Column(
         children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Chat con $currentUser',
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+
+                ),
+                ),
+              IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: logoutChat,
+                color: Colors.red,
+              ),
+            ],
+          ),
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(12),
@@ -154,7 +184,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 return Align(
                   alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                     margin: const EdgeInsets.symmetric(vertical: 4),
                     decoration: BoxDecoration(
                       color: isMe ? Colors.blue : Colors.grey[300],
@@ -162,11 +192,13 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
+
                       children: [
                         Text(
                           msg.content,
                           style: TextStyle(
-                              color: isMe ? Colors.white : Colors.black),
+                              color: isMe ? Colors.white : Colors.black, ),
+
                         ),
                         Text(
                           "${msg.createdAt.hour}:${msg.createdAt.minute.toString().padLeft(2, '0')}",
@@ -190,8 +222,13 @@ class _ChatScreenState extends State<ChatScreen> {
                   child:
                   TextField(
                     controller: _messageController,
-                    decoration: const InputDecoration(hintText: 'Escribe un mensaje...'),
-
+                    decoration: const InputDecoration(hintText: 'Escribe un mensaje...',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(80)),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                      ),
                   ),
                 ),
                 IconButton(

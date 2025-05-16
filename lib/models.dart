@@ -40,14 +40,14 @@ class Message {
   final String content;
   final DateTime createdAt;
   final String senderName;
-  final int chatId;
+  final int? chatId;
 
   Message({
     required this.id,
     required this.content,
     required this.createdAt,
     required this.senderName,
-    required this.chatId,
+    this.chatId,
   });
 
   factory Message.fromJson(Map<String, dynamic> json) {
