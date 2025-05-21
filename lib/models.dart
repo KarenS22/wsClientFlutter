@@ -87,3 +87,57 @@ class IncomingData {
     );
   }
 }
+
+class GroupMessage {
+  final int id;
+  final String content;
+  final DateTime createdAt;
+  final String senderName;
+  final int? groupId;
+
+  GroupMessage({
+    required this.id,
+    required this.content,
+    required this.createdAt,
+    required this.senderName,
+    this.groupId,
+  });
+
+  factory GroupMessage.fromJson(Map<String, dynamic> json) {
+    return GroupMessage(
+      id: json['id'],
+      content: json['content'],
+      createdAt: DateTime.parse(json['createdAt']),
+      senderName: json['senderName'],
+      groupId: json['groupId'] ?? 0,
+    );
+  }
+}
+
+class IncomingGroupData {
+  final String type;
+  final List<GroupMessage>? messages;
+  final GroupMessage? message;
+  final int? groupId;
+
+  IncomingGroupData({
+    required this.type,
+    this.messages,
+    this.message,
+    this.groupId,
+  });
+
+  factory IncomingGroupData.fromJson(Map<String, dynamic> json) {
+    return IncomingGroupData(
+      type: json['type'],
+      messages: json['messages'] != null
+          ? List<GroupMessage>.from(
+          json['messages'].map((msg) => GroupMessage.fromJson(msg)))
+          : null,
+      message:
+      json['message'] != null ? GroupMessage.fromJson(json['message']) : null,
+      groupId: json['groupId'],
+    );
+  }
+}
+
